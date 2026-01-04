@@ -1,0 +1,21 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Allow read access to all files
+    match /{allPaths=**} {
+      allow read: true;
+    }
+
+    // Allow write access to media folder
+    match /media/{allPaths=**} {
+      allow write: true;
+      allow read: true;
+    }
+
+    // Allow write access to gifts folder
+    match /gifts/{allPaths=**} {
+      allow write: true;
+      allow read: true;
+    }
+  }
+}

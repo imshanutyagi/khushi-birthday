@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read access to all documents
+    match /{document=**} {
+      allow read: true;
+    }
+
+    // Settings collection - allow read and write
+    match /settings/{document} {
+      allow read: true;
+      allow write: true;
+    }
+
+    // Gifts collection - allow read and write
+    match /gifts/{document} {
+      allow read: true;
+      allow write: true;
+    }
+
+    // Selections collection - allow read and write
+    match /selections/{document} {
+      allow read: true;
+      allow write: true;
+    }
+
+    // Media collection - allow read and write
+    match /media/{document} {
+      allow read: true;
+      allow write: true;
+    }
+  }
+}
