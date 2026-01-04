@@ -100,7 +100,8 @@ export default function AdminPanel() {
     try {
       if (editingGift.id && editingGift.id.startsWith('gift-new-')) {
         // New gift - use POST
-        await addGift({ ...editingGift, id: undefined as any });
+        const { id, ...giftWithoutId } = editingGift;
+        await addGift(giftWithoutId);
       } else {
         // Existing gift - use PUT
         await updateGift(editingGift.id, editingGift);
