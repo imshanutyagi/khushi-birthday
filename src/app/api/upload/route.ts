@@ -1,13 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadToCloudinary } from '@/lib/cloudinary';
-import formidable from 'formidable';
-import fs from 'fs';
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 
 // POST - Upload file to Cloudinary
 export async function POST(request: NextRequest) {
