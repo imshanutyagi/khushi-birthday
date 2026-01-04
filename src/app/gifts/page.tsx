@@ -121,21 +121,21 @@ export default function GiftsPage() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="romantic-gradient rounded-2xl p-6 shadow-xl mb-4 inline-block">
+          <div className="romantic-gradient rounded-2xl p-4 md:p-6 shadow-xl mb-4 inline-block">
             <h1
-              className="text-4xl md:text-6xl font-bold text-white"
+              className="text-3xl md:text-6xl font-bold text-white"
               style={{ fontFamily: 'var(--font-dancing)' }}
             >
               {content?.giftsTitle || 'Choose Your Gift'}
             </h1>
           </div>
-          <p className="text-xl md:text-2xl text-pink-800 font-bold glass-effect rounded-2xl p-4 inline-block block mt-4">
+          <p className="text-lg md:text-2xl text-pink-800 font-bold glass-effect rounded-2xl p-3 md:p-4 inline-block block mt-4">
             You can pick any TWO 💝💝
           </p>
         </motion.div>
 
         {/* Gifts Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 mb-8">
           {gifts.map((gift, index) => (
             <motion.div
               key={gift.id}
@@ -144,7 +144,7 @@ export default function GiftsPage() {
               transition={{ delay: index * 0.1 }}
             >
               <motion.div
-                className={`relative cursor-pointer rounded-3xl overflow-hidden transition-all duration-300 bg-white ${
+                className={`relative cursor-pointer rounded-2xl md:rounded-3xl overflow-hidden transition-all duration-300 bg-white ${
                   selectedGifts.includes(gift.id)
                     ? 'ring-4 ring-pink-500 shadow-2xl scale-105'
                     : 'shadow-lg hover:shadow-2xl'
@@ -154,23 +154,23 @@ export default function GiftsPage() {
                 whileTap={!confirmed ? { scale: 0.95 } : {}}
               >
                 {/* Gift Ribbon */}
-                <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden z-10">
-                  <div className="absolute transform rotate-45 bg-gradient-to-br from-pink-500 via-rose-500 to-rose-600 text-white text-xs font-bold py-1.5 right-[-38px] top-[16px] w-[130px] text-center shadow-lg">
+                <div className="absolute top-0 right-0 w-16 md:w-20 h-16 md:h-20 overflow-hidden z-10">
+                  <div className="absolute transform rotate-45 bg-gradient-to-br from-pink-500 via-rose-500 to-rose-600 text-white text-[10px] md:text-xs font-bold py-1 md:py-1.5 right-[-35px] md:right-[-38px] top-[12px] md:top-[16px] w-[110px] md:w-[130px] text-center shadow-lg">
                     GIFT 🎁
                   </div>
                 </div>
 
                 {/* Decorative bow at top center */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-3 z-10">
-                  <div className="text-4xl filter drop-shadow-lg">🎀</div>
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 md:-translate-y-3 z-10">
+                  <div className="text-3xl md:text-4xl filter drop-shadow-lg">🎀</div>
                 </div>
 
-                <div className="bg-gradient-to-br from-pink-50 via-purple-50 to-pink-50 p-8 pt-10 min-h-[320px] flex flex-col">
+                <div className="bg-gradient-to-br from-pink-50 via-purple-50 to-pink-50 p-4 md:p-8 pt-8 md:pt-10 min-h-[200px] md:min-h-[320px] flex flex-col">
                   {/* Gift Image or Icon */}
                   {gift.isCustomText ? (
-                    <div className="text-center flex-1 flex flex-col justify-center gap-4">
-                      <div className="text-7xl mb-2 animate-bounce">📝</div>
-                      <h3 className="text-xl font-bold text-romantic-700" style={{ fontFamily: 'var(--font-dancing)' }}>
+                    <div className="text-center flex-1 flex flex-col justify-center gap-2 md:gap-4">
+                      <div className="text-5xl md:text-7xl mb-1 md:mb-2 animate-bounce">📝</div>
+                      <h3 className="text-base md:text-xl font-bold text-romantic-700" style={{ fontFamily: 'var(--font-dancing)' }}>
                         {gift.title}
                       </h3>
                       <button

@@ -219,27 +219,27 @@ export default function LuckPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <h2 className="text-3xl md:text-4xl text-romantic-700 font-bold text-center mb-8">
+              <h2 className="text-2xl md:text-4xl text-romantic-700 font-bold text-center mb-6 md:mb-8 px-2">
                 Here are all the gifts! Remember them... 👀
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
                 {displayBoxes.map((box, index) => (
                   <motion.div
                     key={box.id}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-white/50 backdrop-blur-sm rounded-3xl p-8 min-h-[320px] text-center flex flex-col justify-center shadow-lg"
+                    className="bg-white/50 backdrop-blur-sm rounded-2xl md:rounded-3xl p-4 md:p-8 min-h-[180px] md:min-h-[320px] text-center flex flex-col justify-center shadow-lg"
                   >
                     {box.isWinBox ? (
                       <>
-                        <div className="text-7xl md:text-8xl mb-4 animate-pulse">🏆</div>
-                        <p className="text-base md:text-lg font-semibold text-romantic-700">
+                        <div className="text-5xl md:text-8xl mb-2 md:mb-4 animate-pulse">🏆</div>
+                        <p className="text-sm md:text-lg font-semibold text-romantic-700">
                           Special Prize!
                         </p>
                       </>
                     ) : box.gift.images?.[0] ? (
-                      <div className="relative w-full h-40 md:h-48 mb-4">
+                      <div className="relative w-full h-24 md:h-48 mb-2 md:mb-4">
                         <Image
                           src={box.gift.images[0]}
                           alt={box.gift.title}
@@ -248,12 +248,12 @@ export default function LuckPage() {
                         />
                       </div>
                     ) : (
-                      <div className="text-7xl md:text-8xl mb-4">
+                      <div className="text-5xl md:text-8xl mb-2 md:mb-4">
                         {box.gift.isCustomText ? '📝' : '🎁'}
                       </div>
                     )}
                     {!box.isWinBox && (
-                      <p className="text-base md:text-lg font-semibold text-romantic-700">
+                      <p className="text-xs md:text-lg font-semibold text-romantic-700 line-clamp-2">
                         {box.gift.title}
                       </p>
                     )}
@@ -299,14 +299,14 @@ export default function LuckPage() {
                         scale: { duration: 0.2 },
                       }}
                       style={{ order: box.position }}
-                      className={`rounded-3xl p-8 min-h-[320px] flex items-center justify-center shadow-lg transition-shadow duration-300 ${
+                      className={`rounded-3xl p-4 md:p-8 min-h-[180px] md:min-h-[320px] flex items-center justify-center shadow-lg transition-shadow duration-300 ${
                         phase === 'shuffling' 
                           ? 'bg-gradient-to-br from-purple-500 to-pink-500 shadow-2xl shadow-pink-300/50' 
                           : 'bg-gradient-to-br from-purple-400 to-pink-400'
                       }`}
                     >
                       <motion.div 
-                        className="text-8xl md:text-9xl"
+                        className="text-6xl md:text-9xl"
                         animate={phase === 'shuffling' ? {
                           rotate: [0, -5, 5, 0],
                         } : {}}
@@ -347,7 +347,7 @@ export default function LuckPage() {
                       layout: { type: 'spring', stiffness: 300, damping: 30 }
                     }}
                     style={{ order: box.position }}
-                    className={`cursor-pointer rounded-3xl p-8 min-h-[320px] flex items-center justify-center shadow-lg transition-all ${
+                    className={`cursor-pointer rounded-3xl p-4 md:p-8 min-h-[180px] md:min-h-[320px] flex items-center justify-center shadow-lg transition-all ${
                       selectedBoxes.includes(box.id)
                         ? 'bg-gradient-to-br from-yellow-300 to-yellow-500 ring-4 ring-yellow-400'
                         : 'bg-gradient-to-br from-purple-400 to-pink-400'
@@ -355,7 +355,7 @@ export default function LuckPage() {
                     whileHover={!selectedBoxes.includes(box.id) ? { scale: 1.05 } : {}}
                     whileTap={!selectedBoxes.includes(box.id) ? { scale: 0.95 } : {}}
                   >
-                    <div className="text-8xl md:text-9xl">
+                    <div className="text-6xl md:text-9xl">
                       {selectedBoxes.includes(box.id) ? '✨' : '📦'}
                     </div>
                   </motion.div>

@@ -12,7 +12,14 @@ const dancingScript = Dancing_Script({
 export const metadata: Metadata = {
   title: "Happy Birthday Khushi 🎉",
   description: "A special birthday celebration for someone special",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({
