@@ -216,14 +216,15 @@ export default function LuckPage() {
               <h2 className="text-2xl md:text-4xl text-romantic-700 font-bold text-center mb-6 md:mb-8 px-2">
                 Here are all the gifts! Remember them... 👀
               </h2>
-              <div className="flex flex-wrap justify-center gap-4 md:gap-6 max-w-4xl mx-auto">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto">
                 {displayBoxes.map((box, index) => (
                   <motion.div
                     key={box.id}
+                    layoutId={box.id}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="w-[calc(50%-0.5rem)] md:w-[calc(25%-1.125rem)] aspect-square bg-white/50 backdrop-blur-sm rounded-2xl md:rounded-3xl p-3 md:p-6 text-center flex flex-col justify-center shadow-lg"
+                    className="aspect-square bg-white/50 backdrop-blur-sm rounded-2xl md:rounded-3xl p-3 md:p-6 text-center flex flex-col justify-center shadow-lg"
                   >
                     {box.isWinBox ? (
                       <>
@@ -267,39 +268,25 @@ export default function LuckPage() {
               <h2 className="text-3xl md:text-4xl text-romantic-700 font-bold text-center mb-8">
                 {phase === 'hiding' ? 'Hiding the gifts...' : 'Shuffling... 🔀'}
               </h2>
-              <div className="flex flex-wrap justify-center gap-4 md:gap-6 max-w-4xl mx-auto">
-                {boxes.map((box) => (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto">
+                {[...boxes].sort((a, b) => a.position - b.position).map((box) => (
                   <motion.div
                     key={box.id}
-                    layout
+                    layoutId={box.id}
                     transition={{ 
-                      layout: {
-                        type: 'spring', 
-                        stiffness: 150, 
-                        damping: 20,
-                        mass: 1,
-                      }
+                      type: 'spring', 
+                      stiffness: 200, 
+                      damping: 25,
                     }}
-                    className={`w-[calc(50%-0.5rem)] md:w-[calc(25%-1.125rem)] aspect-square rounded-3xl flex items-center justify-center shadow-lg ${
+                    className={`aspect-square rounded-3xl flex items-center justify-center shadow-lg ${
                       phase === 'shuffling' 
                         ? 'bg-gradient-to-br from-purple-500 to-pink-500 shadow-2xl shadow-pink-300/50' 
                         : 'bg-gradient-to-br from-purple-400 to-pink-400'
                     }`}
-                    style={{ order: box.position }}
                   >
-                    <motion.div 
-                      className="text-6xl md:text-8xl"
-                      animate={phase === 'shuffling' ? {
-                        scale: [1, 1.1, 1],
-                      } : {}}
-                      transition={{
-                        duration: 0.5,
-                        repeat: phase === 'shuffling' ? Infinity : 0,
-                        ease: "easeInOut"
-                      }}
-                    >
+                    <div className="text-6xl md:text-8xl">
                       📦
-                    </motion.div>
+                    </div>
                   </motion.div>
                 ))}
               </div>
@@ -318,17 +305,16 @@ export default function LuckPage() {
               <p className="text-xl text-romantic-600 text-center mb-8">
                 Click any box to reveal your prize!
               </p>
-              <div className="flex flex-wrap justify-center gap-4 md:gap-6 max-w-4xl mx-auto">
-                {boxes.map((box) => (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto">
+                {[...boxes].sort((a, b) => a.position - b.position).map((box) => (
                   <motion.div
                     key={box.id}
-                    layout
+                    layoutId={box.id}
                     onClick={() => handleSelectBox(box.id)}
                     transition={{ 
-                      layout: { type: 'spring', stiffness: 150, damping: 20 }
+                      type: 'spring', stiffness: 200, damping: 25
                     }}
-                    style={{ order: box.position }}
-                    className={`w-[calc(50%-0.5rem)] md:w-[calc(25%-1.125rem)] aspect-square cursor-pointer rounded-3xl flex items-center justify-center shadow-lg transition-all ${
+                    className={`aspect-square cursor-pointer rounded-3xl flex items-center justify-center shadow-lg transition-all ${
                       selectedBoxes.includes(box.id)
                         ? 'bg-gradient-to-br from-yellow-300 to-yellow-500 ring-4 ring-yellow-400'
                         : 'bg-gradient-to-br from-purple-400 to-pink-400'
