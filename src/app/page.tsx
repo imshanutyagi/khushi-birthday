@@ -69,7 +69,7 @@ export default function IntroPage() {
             transition={{ delay: 0.5 }}
           >
             <motion.p
-              className="text-xl md:text-2xl text-gray-800 font-semibold"
+              className="text-base md:text-2xl text-gray-800 font-semibold"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.7 }}
@@ -78,7 +78,7 @@ export default function IntroPage() {
             </motion.p>
 
             <motion.p
-              className="text-lg md:text-xl text-gray-700 font-medium"
+              className="text-sm md:text-xl text-gray-700 font-medium"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 1 }}
@@ -87,7 +87,7 @@ export default function IntroPage() {
             </motion.p>
 
             <motion.p
-              className="text-lg md:text-xl text-gray-700 font-medium"
+              className="text-sm md:text-xl text-gray-700 font-medium"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 1.3 }}
@@ -96,13 +96,13 @@ export default function IntroPage() {
             </motion.p>
 
             <motion.div
-              className="romantic-gradient rounded-2xl p-6 shadow-xl mb-6"
+              className="romantic-gradient rounded-xl md:rounded-2xl p-4 md:p-6 shadow-xl mb-4 md:mb-6"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 1.6, type: 'spring', stiffness: 200 }}
             >
               <h1
-                className="text-4xl md:text-6xl font-bold text-white"
+                className="text-2xl md:text-6xl font-bold text-white"
                 style={{ fontFamily: 'var(--font-dancing)' }}
               >
                 Happy Birthday, Khushi! 🎉
@@ -110,7 +110,7 @@ export default function IntroPage() {
             </motion.div>
 
             <motion.p
-              className="text-2xl md:text-3xl text-pink-700 font-semibold"
+              className="text-lg md:text-3xl text-pink-700 font-semibold"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 1.9 }}
@@ -129,7 +129,7 @@ export default function IntroPage() {
                 transition={{ duration: 0.6 }}
               >
                 <motion.p
-                  className="text-2xl md:text-3xl text-pink-800 font-bold"
+                  className="text-xl md:text-3xl text-pink-800 font-bold"
                   animate={{ scale: [1, 1.05, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 >
@@ -138,7 +138,7 @@ export default function IntroPage() {
 
                 <motion.button
                   onClick={handleReady}
-                  className="px-8 py-4 md:px-12 md:py-5 bg-gradient-to-r from-pink-500 to-rose-600 text-white text-xl md:text-2xl font-bold rounded-full shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                  className="px-6 py-3 md:px-12 md:py-5 bg-gradient-to-r from-pink-500 to-rose-600 text-white text-lg md:text-2xl font-bold rounded-full shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   animate={{ y: [0, -10, 0] }}

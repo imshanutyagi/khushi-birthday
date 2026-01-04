@@ -61,13 +61,13 @@ export default function WishesPage() {
         >
           {/* Title */}
           <motion.div
-            className="romantic-gradient rounded-2xl p-6 shadow-xl mb-8"
+            className="romantic-gradient rounded-xl md:rounded-2xl p-4 md:p-6 shadow-xl mb-4 md:mb-8"
             initial={{ y: -30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
             <h1
-              className="text-4xl md:text-6xl font-bold text-white"
+              className="text-2xl md:text-6xl font-bold text-white"
               style={{ fontFamily: 'var(--font-dancing)' }}
             >
               {content?.wishesTitle || 'Best Wishes for You'}
@@ -76,25 +76,25 @@ export default function WishesPage() {
 
           {/* Decorative hearts */}
           <motion.div
-            className="flex justify-center gap-4 mb-8"
+            className="flex justify-center gap-2 md:gap-4 mb-4 md:mb-8"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.6, type: 'spring' }}
           >
-            <span className="text-4xl animate-heart-beat">💖</span>
-            <span className="text-5xl animate-heart-beat" style={{ animationDelay: '0.2s' }}>❤️</span>
-            <span className="text-4xl animate-heart-beat" style={{ animationDelay: '0.4s' }}>💖</span>
+            <span className="text-2xl md:text-4xl animate-heart-beat">💖</span>
+            <span className="text-3xl md:text-5xl animate-heart-beat" style={{ animationDelay: '0.2s' }}>❤️</span>
+            <span className="text-2xl md:text-4xl animate-heart-beat" style={{ animationDelay: '0.4s' }}>💖</span>
           </motion.div>
 
           {/* Wishes message */}
           <motion.div
-            className="mb-10"
+            className="mb-6 md:mb-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9 }}
           >
             <motion.p
-              className="text-xl md:text-2xl text-romantic-700 leading-relaxed whitespace-pre-line"
+              className="text-base md:text-2xl text-romantic-700 leading-relaxed whitespace-pre-line"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 1.2 }}
@@ -138,7 +138,7 @@ export default function WishesPage() {
             >
               <motion.button
                 onClick={handleNext}
-                className="px-8 py-4 md:px-12 md:py-5 bg-gradient-to-r from-pink-500 to-rose-600 text-white text-xl md:text-2xl font-bold rounded-full shadow-lg hover:shadow-2xl transform transition-all duration-300"
+                className="px-6 py-3 md:px-12 md:py-5 bg-gradient-to-r from-pink-500 to-rose-600 text-white text-base md:text-2xl font-bold rounded-full shadow-lg hover:shadow-2xl transform transition-all duration-300"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 animate={{ y: [0, -10, 0] }}

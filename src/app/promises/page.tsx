@@ -68,20 +68,20 @@ export default function PromisesPage() {
         transition={{ duration: 1 }}
       >
         <motion.div
-          className="glass-effect rounded-3xl p-6 md:p-12 shadow-2xl"
+          className="glass-effect rounded-2xl md:rounded-3xl p-4 md:p-12 shadow-2xl"
           initial={{ scale: 0.8, y: 50 }}
           animate={{ scale: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
           {/* Title */}
           <motion.div
-            className="romantic-gradient rounded-2xl p-6 shadow-xl mb-12"
+            className="romantic-gradient rounded-xl md:rounded-2xl p-4 md:p-6 shadow-xl mb-6 md:mb-12"
             initial={{ y: -30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
             <h1
-              className="text-4xl md:text-6xl font-bold text-white"
+              className="text-2xl md:text-6xl font-bold text-white"
               style={{ fontFamily: 'var(--font-dancing)' }}
             >
               {content?.promisesTitle || 'My Promises to You'}
@@ -89,7 +89,7 @@ export default function PromisesPage() {
           </motion.div>
 
           {/* Promises */}
-          <div className="space-y-8 mb-10">
+          <div className="space-y-4 md:space-y-8 mb-6 md:mb-10">
             {promises.map((promise, index) => (
               <motion.div
                 key={index}
@@ -98,12 +98,12 @@ export default function PromisesPage() {
                 transition={{ delay: 0.5 + index * 0.2 }}
                 className="relative"
               >
-                <div className="bg-white/40 backdrop-blur-sm rounded-2xl p-6 border-2 border-romantic-300 shadow-lg">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="text-4xl animate-heart-beat">
+                <div className="bg-white/40 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-6 border-2 border-romantic-300 shadow-lg">
+                  <div className="flex items-center gap-2 md:gap-4 mb-2 md:mb-4">
+                    <div className="text-2xl md:text-4xl animate-heart-beat">
                       {index === 0 ? '💕' : index === 1 ? '💖' : '💝'}
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-romantic-700">
+                    <h3 className="text-lg md:text-3xl font-bold text-romantic-700">
                       Promise {index + 1}
                     </h3>
                   </div>
@@ -118,7 +118,7 @@ export default function PromisesPage() {
                       >
                         <motion.button
                           onClick={() => handleReveal(index)}
-                          className="px-6 py-3 bg-gradient-to-r from-pink-400 to-rose-500 text-white text-lg font-semibold rounded-full shadow-md hover:shadow-xl transform transition-all duration-300"
+                          className="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-pink-400 to-rose-500 text-white text-sm md:text-lg font-semibold rounded-full shadow-md hover:shadow-xl transform transition-all duration-300"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
@@ -132,11 +132,11 @@ export default function PromisesPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                       >
-                        <p className="text-lg md:text-xl text-romantic-800 leading-relaxed">
+                        <p className="text-sm md:text-xl text-romantic-800 leading-relaxed">
                           {promise.text}
                         </p>
                         <motion.div
-                          className="mt-4 text-3xl"
+                          className="mt-2 md:mt-4 text-2xl md:text-3xl"
                           animate={{
                             scale: [1, 1.2, 1],
                           }}

@@ -88,20 +88,20 @@ export default function CakePage() {
         <AnimatePresence>
           {!isCut && (
             <motion.div
-              className="mb-8"
+              className="mb-4 md:mb-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
               <motion.p
-                className="text-2xl md:text-3xl text-pink-800 font-bold mb-4 glass-effect rounded-2xl p-6 select-none"
+                className="text-lg md:text-3xl text-pink-800 font-bold mb-2 md:mb-4 glass-effect rounded-xl md:rounded-2xl p-3 md:p-6 select-none"
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
                 {content?.cakeInstruction || 'Swipe once on the cake to cut it 🎂'}
               </motion.p>
               <motion.p
-                className="text-lg text-pink-700 font-semibold select-none"
+                className="text-sm md:text-lg text-pink-700 font-semibold select-none"
                 animate={{ y: [0, -5, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >

@@ -198,15 +198,15 @@ export default function LuckPage() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
             >
-              <div className="romantic-gradient rounded-2xl p-6 shadow-xl mb-4 inline-block">
+              <div className="romantic-gradient rounded-xl md:rounded-2xl p-4 md:p-6 shadow-xl mb-4 inline-block">
                 <h1
-                  className="text-4xl md:text-6xl font-bold text-white"
+                  className="text-2xl md:text-6xl font-bold text-white"
                   style={{ fontFamily: 'var(--font-dancing)' }}
                 >
                   {content?.luckTitle || "It's time for your luck! 🍀"}
                 </h1>
               </div>
-              <p className="text-2xl text-pink-800 font-semibold">
+              <p className="text-lg md:text-2xl text-pink-800 font-semibold">
                 Get ready to test your fortune!
               </p>
             </motion.div>
@@ -270,10 +270,10 @@ export default function LuckPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <h2 className="text-3xl md:text-4xl text-romantic-700 font-bold text-center mb-8">
+              <h2 className="text-xl md:text-4xl text-romantic-700 font-bold text-center mb-4 md:mb-8">
                 {phase === 'hiding' ? 'Hiding the gifts...' : 'Shuffling... 🔀'}
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6">
                 {boxes.map((box, index) => {
                   // Add slight rotation variation per box during shuffle
                   const rotationOffset = phase === 'shuffling' 
@@ -298,15 +298,14 @@ export default function LuckPage() {
                         rotate: { duration: 0.2 },
                         scale: { duration: 0.2 },
                       }}
-                      style={{ order: box.position }}
-                      className={`rounded-3xl p-4 md:p-8 min-h-[180px] md:min-h-[320px] flex items-center justify-center shadow-lg transition-shadow duration-300 ${
+                      style={{ order: box.position }}\n                      className={`rounded-2xl md:rounded-3xl p-2 md:p-8 min-h-[140px] md:min-h-[320px] flex items-center justify-center shadow-lg transition-shadow duration-300 ${", "oldString": "                      style={{ order: box.position }}\n                      className={`rounded-3xl p-4 md:p-8 min-h-[180px] md:min-h-[320px] flex items-center justify-center shadow-lg transition-shadow duration-300 ${"
                         phase === 'shuffling' 
                           ? 'bg-gradient-to-br from-purple-500 to-pink-500 shadow-2xl shadow-pink-300/50' 
                           : 'bg-gradient-to-br from-purple-400 to-pink-400'
                       }`}
                     >
                       <motion.div 
-                        className="text-6xl md:text-9xl"
+                        className="text-5xl md:text-9xl"
                         animate={phase === 'shuffling' ? {
                           rotate: [0, -5, 5, 0],
                         } : {}}
@@ -331,13 +330,13 @@ export default function LuckPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <h2 className="text-3xl md:text-4xl text-romantic-700 font-bold text-center mb-4">
+              <h2 className="text-xl md:text-4xl text-romantic-700 font-bold text-center mb-2 md:mb-4">
                 Pick ANY ONE box! 🎁
               </h2>
-              <p className="text-xl text-romantic-600 text-center mb-8">
+              <p className="text-base md:text-xl text-romantic-600 text-center mb-4 md:mb-8">
                 Click any box to reveal your prize!
               </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6">
                 {boxes.map((box) => (
                   <motion.div
                     key={box.id}
@@ -347,7 +346,7 @@ export default function LuckPage() {
                       layout: { type: 'spring', stiffness: 300, damping: 30 }
                     }}
                     style={{ order: box.position }}
-                    className={`cursor-pointer rounded-3xl p-4 md:p-8 min-h-[180px] md:min-h-[320px] flex items-center justify-center shadow-lg transition-all ${
+                    className={`cursor-pointer rounded-2xl md:rounded-3xl p-2 md:p-8 min-h-[140px] md:min-h-[320px] flex items-center justify-center shadow-lg transition-all ${
                       selectedBoxes.includes(box.id)
                         ? 'bg-gradient-to-br from-yellow-300 to-yellow-500 ring-4 ring-yellow-400'
                         : 'bg-gradient-to-br from-purple-400 to-pink-400'
@@ -355,7 +354,7 @@ export default function LuckPage() {
                     whileHover={!selectedBoxes.includes(box.id) ? { scale: 1.05 } : {}}
                     whileTap={!selectedBoxes.includes(box.id) ? { scale: 0.95 } : {}}
                   >
-                    <div className="text-6xl md:text-9xl">
+                    <div className="text-5xl md:text-9xl">
                       {selectedBoxes.includes(box.id) ? '✨' : '📦'}
                     </div>
                   </motion.div>
