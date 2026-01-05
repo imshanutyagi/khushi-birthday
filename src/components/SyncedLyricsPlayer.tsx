@@ -139,50 +139,6 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
         <h2 className="text-2xl md:text-3xl font-bold text-white" style={{ fontFamily: 'var(--font-dancing)' }}>
           🎵 {songTitle}
         </h2>
-        {/* Debug Timer - Shows current playback time */}
-        <p className="text-sm text-white/70 mt-2 font-mono bg-black/30 px-3 py-1 rounded">
-          Time: {currentTime.toFixed(1)}s | Line: {currentLineIndex + 1}/{lyrics.length}
-        </p>
-        {/* Playback Controls */}
-        {!isYouTube && (
-          <div className="flex items-center gap-2 mt-3">
-            <button
-              onClick={() => skipTime(-10)}
-              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-all"
-              title="Rewind 10s"
-            >
-              ⏪ -10s
-            </button>
-            <button
-              onClick={() => skipTime(-5)}
-              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-all"
-              title="Rewind 5s"
-            >
-              ◀️ -5s
-            </button>
-            <button
-              onClick={togglePlayPause}
-              className="bg-white/30 hover:bg-white/40 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-lg font-bold transition-all"
-              title={isPlaying ? 'Pause' : 'Play'}
-            >
-              {isPlaying ? '⏸️' : '▶️'}
-            </button>
-            <button
-              onClick={() => skipTime(5)}
-              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-all"
-              title="Forward 5s"
-            >
-              +5s ▶️
-            </button>
-            <button
-              onClick={() => skipTime(10)}
-              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-all"
-              title="Forward 10s"
-            >
-              +10s ⏩
-            </button>
-          </div>
-        )}
       </motion.div>
 
       {/* Hidden Audio Player (for non-YouTube) */}
@@ -217,8 +173,7 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
               return (
                 <motion.div
                   key={index}
-                  className="text-center mb-8 cursor-pointer"
-                  onClick={() => seekToTime(line.time)}
+                  className="text-center mb-8"
                   initial={{ opacity: 0, y: 50, scale: 0.8 }}
                   animate={{
                     opacity: isActive ? 1 : isPast ? 0.3 : 0.5,
@@ -227,12 +182,11 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
                   }}
                   exit={{ opacity: 0, y: -50 }}
                   transition={{ duration: 0.5, ease: 'easeOut' }}
-                  title={`Click to jump to ${line.time}s`}
                 >
                   <motion.p
                     className={`text-2xl md:text-5xl font-bold ${
                       isActive ? 'text-white' : 'text-white/50'
-                    } hover:text-white/80 transition-colors`}
+                    }`}
                     style={{ fontFamily: 'var(--font-dancing)' }}
                     animate={isActive ? {
                       textShadow: [
@@ -245,7 +199,6 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
                   >
                     {line.text}
                   </motion.p>
-                  <p className="text-xs text-white/40 mt-1">{line.time}s</p>
                 </motion.div>
               );
             })}

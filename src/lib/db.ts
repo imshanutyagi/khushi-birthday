@@ -18,7 +18,6 @@ export const getPageContent = async (): Promise<PageContent | null> => {
 
 export const updatePageContent = async (content: Partial<PageContent>): Promise<void> => {
   try {
-    console.log('📤 Saving content to database:', content);
     const response = await fetch('/api/content', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -26,13 +25,12 @@ export const updatePageContent = async (content: Partial<PageContent>): Promise<
     });
 
     const result = await response.json();
-    console.log('✅ Save response:', result);
 
     if (!result.success) {
       throw new Error(result.error || 'Failed to save content');
     }
   } catch (error) {
-    console.error('❌ Error updating page content:', error);
+    console.error('Error updating page content:', error);
     throw error;
   }
 };
