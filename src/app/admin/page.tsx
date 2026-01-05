@@ -839,7 +839,9 @@ export default function AdminPanel() {
                             </p>
                             {selection.customText && (
                               <div className="mt-2 bg-purple-50 rounded-lg p-3 border border-purple-200">
-                                <p className="text-xs font-semibold text-purple-600 mb-1">Included Custom Wish</p>
+                                <p className="text-xs font-semibold text-purple-600 mb-1">
+                                  {isFinalSelection ? "User's Custom Wish" : "With Custom Wish"}
+                                </p>
                                 <p className="text-romantic-700 italic">
                                   "{selection.customText}"
                                 </p>
