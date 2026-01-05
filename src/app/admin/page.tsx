@@ -797,25 +797,25 @@ export default function AdminPanel() {
                 {selections.map((selection) => {
                   const selectedGift = gifts.find(g => g.id === selection.selectedGiftId);
                   const openedGifts = gifts.filter(g => selection.openedGiftIds?.includes(g.id));
-
-                  // Debug logging
-                  console.log('Selection:', {
-                    id: selection.id,
-                    selectedGiftId: selection.selectedGiftId,
-                    customText: selection.customText,
-                    hasCustomText: !!selection.customText
-                  });
+                  const isFinalSelection = selection.openedGiftIds && selection.openedGiftIds.length > 0;
+                  const isCustomWish = selection.selectedGiftId === 'custom';
 
                   return (
-                    <div key={selection.id} className="bg-white rounded-xl p-4 border-2 border-romantic-200">
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <p className="text-sm text-gray-500">
-                            {new Date(selection.timestamp).toLocaleString()}
-                          </p>
-                          <p className="text-xs text-gray-400">
-                            ID: {selection.selectedGiftId} | Custom: {selection.customText || 'none'}
-                          </p>
+                    <div key={selection.id} className={`bg-white rounded-xl p-4 border-2 ${isFinalSelection ? 'border-green-300 bg-green-50/30' : 'border-romantic-200'}`}>
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                              isFinalSelection
+                                ? 'bg-green-500 text-white'
+                                : 'bg-purple-500 text-white'
+                            }`}>
+                              {isFinalSelection ? '🎁 Final Choice' : '💭 Initial Selection'}
+                            </span>
+                            <p className="text-xs text-gray-500">
+                              {new Date(selection.timestamp).toLocaleString()}
+                            </p>
+                          </div>
                         </div>
                         <button
                           onClick={() => selection.id && handleDeleteSelection(selection.id)}
@@ -825,22 +825,28 @@ export default function AdminPanel() {
                         </button>
                       </div>
                       <div className="space-y-2">
-                        <p className="text-romantic-700">
-                          <strong>Selected Gift (Page 5):</strong>{' '}
-                          {selection.selectedGiftId === 'custom' 
-                            ? `Custom Wish: "${selection.customText || 'N/A'}"`
-                            : (selectedGift?.title || selection.selectedGiftId || 'N/A')}
-                        </p>
-                        {selection.customText && selection.selectedGiftId !== 'custom' && (
-                          <p className="text-romantic-700">
-                            <strong>Custom Text:</strong>{' '}
-                            {selection.customText}
-                          </p>
+                        {isCustomWish ? (
+                          <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
+                            <p className="text-xs font-semibold text-purple-600 mb-1">Custom Wish</p>
+                            <p className="text-romantic-700 italic">
+                              "{selection.customText || 'N/A'}"
+                            </p>
+                          </div>
+                        ) : (
+                          <div>
+                            <p className="text-romantic-700">
+                              <strong>Gift:</strong> {selectedGift?.title || selection.selectedGiftId || 'Unknown'}
+                            </p>
+                            {selection.customText && (
+                              <div className="mt-2 bg-purple-50 rounded-lg p-3 border border-purple-200">
+                                <p className="text-xs font-semibold text-purple-600 mb-1">Included Custom Wish</p>
+                                <p className="text-romantic-700 italic">
+                                  "{selection.customText}"
+                                </p>
+                              </div>
+                            )}
+                          </div>
                         )}
-                        <p className="text-romantic-700">
-                          <strong>Opened Gifts (Page 6):</strong>{' '}
-                          {openedGifts.map(g => g.title).join(', ') || 'N/A'}
-                        </p>
                       </div>
                     </div>
                   );
