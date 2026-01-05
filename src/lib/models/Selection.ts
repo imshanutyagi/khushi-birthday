@@ -12,7 +12,7 @@ export interface ISelection extends Document {
 const SelectionSchema = new Schema<ISelection>(
   {
     selectedGiftId: { type: String, default: null },
-    customText: { type: String, default: '' },
+    customText: { type: String },
     openedGiftIds: { type: [String], default: [] },
     timestamp: { type: Number, required: true },
     userAgent: { type: String, default: '' },
@@ -22,7 +22,10 @@ const SelectionSchema = new Schema<ISelection>(
   }
 );
 
+// Clear cached model to ensure schema updates take effect
+delete mongoose.models.Selection;
+
 const Selection: Model<ISelection> =
-  mongoose.models.Selection || mongoose.model<ISelection>('Selection', SelectionSchema);
+  mongoose.model<ISelection>('Selection', SelectionSchema);
 
 export default Selection;
