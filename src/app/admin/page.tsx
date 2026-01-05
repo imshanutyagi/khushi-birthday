@@ -798,12 +798,23 @@ export default function AdminPanel() {
                   const selectedGift = gifts.find(g => g.id === selection.selectedGiftId);
                   const openedGifts = gifts.filter(g => selection.openedGiftIds?.includes(g.id));
 
+                  // Debug logging
+                  console.log('Selection:', {
+                    id: selection.id,
+                    selectedGiftId: selection.selectedGiftId,
+                    customText: selection.customText,
+                    hasCustomText: !!selection.customText
+                  });
+
                   return (
                     <div key={selection.id} className="bg-white rounded-xl p-4 border-2 border-romantic-200">
                       <div className="flex justify-between items-start mb-4">
                         <div>
                           <p className="text-sm text-gray-500">
                             {new Date(selection.timestamp).toLocaleString()}
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            ID: {selection.selectedGiftId} | Custom: {selection.customText || 'none'}
                           </p>
                         </div>
                         <button
@@ -818,7 +829,7 @@ export default function AdminPanel() {
                           <strong>Selected Gift (Page 5):</strong>{' '}
                           {selection.selectedGiftId === 'custom' 
                             ? `Custom Wish: "${selection.customText || 'N/A'}"`
-                            : (selectedGift?.title || 'N/A')}
+                            : (selectedGift?.title || selection.selectedGiftId || 'N/A')}
                         </p>
                         {selection.customText && selection.selectedGiftId !== 'custom' && (
                           <p className="text-romantic-700">
