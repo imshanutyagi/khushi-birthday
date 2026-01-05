@@ -14,6 +14,8 @@ export default function IntroPage() {
   const [showReady, setShowReady] = useState(false);
   const [content, setContent] = useState<PageContent | null>(null);
   const [loading, setLoading] = useState(true);
+  const [lateMessage, setLateMessage] = useState<string>('');
+  const [currentDate, setCurrentDate] = useState<string>('');
 
   useEffect(() => {
     const loadContent = async () => {
@@ -23,6 +25,26 @@ export default function IntroPage() {
       setLoading(false);
     };
     loadContent();
+
+    // Calculate if opening late
+    const now = new Date();
+    const birthday = new Date('2026-01-04T00:00:00');
+    const currentDateStr = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+    setCurrentDate(currentDateStr);
+
+    if (now > birthday) {
+      const diffMs = now.getTime() - birthday.getTime();
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+      const diffDays = Math.floor(diffHours / 24);
+
+      let message = '';
+      if (diffDays > 0) {
+        message = `Hmm! You're opening it ${diffDays} day${diffDays > 1 ? 's' : ''} late, but still...`;
+      } else if (diffHours > 0) {
+        message = `Hmm! You're opening it ${diffHours} hour${diffHours > 1 ? 's' : ''} late, but still...`;
+      }
+      setLateMessage(message);
+    }
 
     const timer = setTimeout(() => {
       setShowReady(true);
@@ -68,13 +90,24 @@ export default function IntroPage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
+            {lateMessage && (
+              <motion.p
+                className="text-base md:text-xl text-pink-600 font-semibold italic"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                {lateMessage}
+              </motion.p>
+            )}
+
             <motion.p
               className="text-base md:text-2xl text-gray-800 font-semibold"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.7 }}
             >
-              {content?.introText1 || 'Today is 4 January.'}
+              Today is {currentDate || '4 January'}.
             </motion.p>
 
             <motion.p
