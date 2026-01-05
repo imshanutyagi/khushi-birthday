@@ -107,7 +107,7 @@ export default function IntroPage() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.7 }}
             >
-              Today is {currentDate || '4 January'}.
+              Today is {currentDate || 'January 4'}.
             </motion.p>
 
             <motion.p
@@ -116,7 +116,7 @@ export default function IntroPage() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 1 }}
             >
-              {content?.introText2 || 'This is the day when you were born,'}
+              {lateMessage ? 'January 4th was the day when you were born,' : (content?.introText2 || 'This is the day when you were born,')}
             </motion.p>
 
             <motion.p
