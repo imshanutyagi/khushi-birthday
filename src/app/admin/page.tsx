@@ -88,8 +88,10 @@ export default function AdminPanel() {
         setMessage('File uploaded successfully!');
         setTimeout(() => setMessage(''), 3000);
       }
-    } catch (error) {
-      setMessage('Error uploading file');
+    } catch (error: any) {
+      console.error('Upload error:', error);
+      setMessage(`Error uploading file: ${error.message || 'Unknown error'}`);
+      setTimeout(() => setMessage(''), 5000);
     }
     setLoading(false);
   };
