@@ -474,18 +474,22 @@ export default function AdminPanel() {
               />
               <div>
                 <label className="block text-sm font-semibold text-purple-700 mb-2">
-                  Song Audio URL (Required)
+                  Song Audio File (Required) {content.songUrl && '✓'}
                 </label>
                 <input
-                  type="url"
-                  value={content.songUrl || ''}
-                  onChange={(e) => setContent({ ...content, songUrl: e.target.value })}
-                  placeholder="Direct audio file URL (e.g., Google Drive, Dropbox, or YouTube link)"
-                  className="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 outline-none"
+                  type="file"
+                  accept="audio/*"
+                  onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0], 'songUrl')}
+                  className="w-full"
                 />
                 <p className="text-xs text-gray-600 mt-1">
-                  Upload your audio file to Google Drive, Dropbox, or use a YouTube link, then paste the URL here.
+                  Upload your MP3 or audio file here. You can also use a YouTube link.
                 </p>
+                {content.songUrl && (
+                  <p className="text-xs text-green-600 mt-1">
+                    ✓ Audio file uploaded: {content.songUrl.split('/').pop()}
+                  </p>
+                )}
               </div>
 
               <div className="bg-purple-100 rounded-lg p-4 border-2 border-purple-400">
