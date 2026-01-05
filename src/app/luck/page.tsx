@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Balloons from '@/components/Balloons';
 import ConfettiEffect from '@/components/ConfettiEffect';
-import { getPageContent, getGifts, getUserSelections, saveUserSelection } from '@/lib/db';
+import { getPageContent, getGifts, saveUserSelection } from '@/lib/db';
 import { PageContent, Gift } from '@/lib/types';
 import Image from 'next/image';
 
@@ -146,14 +146,9 @@ export default function LuckPage() {
     setFinalSelectedGift(giftId);
     setShowConfetti(true);
 
-    // Save final gift selection
-    const selections = await getUserSelections();
-    // Find the custom selection to preserve the custom text
-    const customSelection = selections.find(s => s.selectedGiftId === 'custom');
-
+    // Save final gift selection (without custom text - that stays with initial selection)
     await saveUserSelection({
       selectedGiftId: giftId,
-      customText: customSelection?.customText,
       openedGiftIds: [giftId],
       timestamp: Date.now(),
       userAgent: navigator.userAgent,
