@@ -512,7 +512,7 @@ export default function LuckPage() {
                           animate={{ y: [0, -5, 0] }}
                           transition={{ duration: 2, repeat: Infinity }}
                         >
-                          🎬 Watch with Lyrics
+                          🎵 Listen to the Song
                         </motion.button>
                       </div>
                     </div>

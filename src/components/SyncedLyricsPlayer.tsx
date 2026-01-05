@@ -116,6 +116,10 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
         <h2 className="text-2xl md:text-3xl font-bold text-white" style={{ fontFamily: 'var(--font-dancing)' }}>
           🎵 {songTitle}
         </h2>
+        {/* Debug Timer - Shows current playback time */}
+        <p className="text-sm text-white/70 mt-2 font-mono bg-black/30 px-3 py-1 rounded">
+          Time: {currentTime.toFixed(1)}s | Line: {currentLineIndex + 1}/{lyrics.length}
+        </p>
       </motion.div>
 
       {/* Hidden Audio Player (for non-YouTube) */}
