@@ -94,8 +94,10 @@ export default function AdminPanel() {
       setHasUnsavedChanges(false); // Clear unsaved changes flag after successful save
       setMessage('Content saved successfully!');
       setTimeout(() => setMessage(''), 3000);
-    } catch (error) {
-      setMessage('Error saving content');
+    } catch (error: any) {
+      console.error('Save error:', error);
+      setMessage(`Error saving content: ${error.message || 'Unknown error'}`);
+      setTimeout(() => setMessage(''), 5000);
     }
     setLoading(false);
   };
