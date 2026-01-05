@@ -41,6 +41,7 @@ export interface IPageContent {
   songTitle?: string;
   songLyrics?: string;
   songUrl?: string;
+  syncedLyrics?: Array<{ time: number; text: string }>;
 
   updatedAt: Date;
 }
@@ -91,6 +92,7 @@ const PageContentSchema = new Schema<IPageContent>(
     songTitle: { type: String, default: '' },
     songLyrics: { type: String, default: '' },
     songUrl: { type: String, default: '' },
+    syncedLyrics: { type: [{ time: Number, text: String }], default: [] },
   },
   {
     timestamps: true,

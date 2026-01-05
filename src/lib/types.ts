@@ -41,6 +41,7 @@ export interface PageContent {
   songTitle?: string;
   songLyrics?: string;
   songUrl?: string;
+  syncedLyrics?: Array<{ time: number; text: string }>; // time in seconds
 }
 
 export interface Gift {

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Balloons from '@/components/Balloons';
 import ConfettiEffect from '@/components/ConfettiEffect';
+import SyncedLyricsPlayer from '@/components/SyncedLyricsPlayer';
 import { getPageContent, getGifts, saveUserSelection } from '@/lib/db';
 import { PageContent, Gift } from '@/lib/types';
 import Image from 'next/image';
@@ -28,6 +29,7 @@ export default function LuckPage() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [showSongQuestion, setShowSongQuestion] = useState(false);
   const [showSong, setShowSong] = useState(false);
+  const [showLyricsPlayer, setShowLyricsPlayer] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -544,16 +546,22 @@ export default function LuckPage() {
                         </div>
                         {content.songUrl && (
                           <div className="text-center">
-                            <motion.a
-                              href={content.songUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <motion.button
+                              onClick={() => {
+                                if (content.syncedLyrics && content.syncedLyrics.length > 0) {
+                                  setShowLyricsPlayer(true);
+                                } else {
+                                  window.open(content.songUrl, '_blank');
+                                }
+                              }}
                               className="inline-block px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-lg font-bold rounded-full shadow-lg hover:shadow-2xl"
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
                             >
-                              Listen to the Song 🎧
-                            </motion.a>
+                              {content.syncedLyrics && content.syncedLyrics.length > 0
+                                ? '🎵 Watch with Synced Lyrics'
+                                : 'Listen to the Song 🎧'}
+                            </motion.button>
                           </div>
                         )}
                       </div>
@@ -586,6 +594,18 @@ export default function LuckPage() {
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Synced Lyrics Player */}
+      <AnimatePresence>
+        {showLyricsPlayer && content?.syncedLyrics && content.syncedLyrics.length > 0 && (
+          <SyncedLyricsPlayer
+            songTitle={content.songTitle || 'Special Song'}
+            songUrl={content.songUrl || ''}
+            lyrics={content.syncedLyrics}
+            onClose={() => setShowLyricsPlayer(false)}
+          />
+        )}
+      </AnimatePresence>
     </main>
   );
 }

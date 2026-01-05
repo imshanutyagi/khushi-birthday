@@ -476,6 +476,44 @@ export default function AdminPanel() {
                 placeholder="Song URL (YouTube, Spotify, etc.)"
                 className="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 outline-none"
               />
+
+              <div className="bg-purple-100 rounded-lg p-4 border border-purple-300">
+                <h4 className="font-bold text-purple-700 mb-2">🎬 Synced Lyrics (Advanced)</h4>
+                <p className="text-xs text-gray-600 mb-3">
+                  Add timestamps for animated lyrics! Format: <code className="bg-white px-1 rounded">time: lyric</code>
+                </p>
+                <p className="text-xs text-gray-600 mb-3">
+                  Example:<br/>
+                  <code className="bg-white px-2 py-1 rounded block mt-1">
+                    0: I found a love<br/>
+                    3.5: For me<br/>
+                    7: Darling just dive right in
+                  </code>
+                </p>
+                <textarea
+                  value={
+                    content.syncedLyrics && content.syncedLyrics.length > 0
+                      ? content.syncedLyrics.map(l => `${l.time}: ${l.text}`).join('\n')
+                      : ''
+                  }
+                  onChange={(e) => {
+                    const lines = e.target.value.split('\n').filter(l => l.trim());
+                    const parsed = lines
+                      .map(line => {
+                        const match = line.match(/^([\d.]+):\s*(.+)$/);
+                        if (match) {
+                          return { time: parseFloat(match[1]), text: match[2].trim() };
+                        }
+                        return null;
+                      })
+                      .filter(l => l !== null) as Array<{ time: number; text: string }>;
+                    setContent({ ...content, syncedLyrics: parsed });
+                  }}
+                  placeholder="0: First line&#10;3.5: Second line&#10;7: Third line"
+                  rows={8}
+                  className="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 outline-none font-mono text-sm"
+                />
+              </div>
             </div>
 
             <button
