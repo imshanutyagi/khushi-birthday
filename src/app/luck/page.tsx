@@ -148,16 +148,22 @@ export default function LuckPage() {
 
     // Save final gift selection
     const selections = await getUserSelections();
+    console.log('PAGE 6 - All selections:', selections);
+
     // Find the custom selection to preserve the custom text
     const customSelection = selections.find(s => s.selectedGiftId === 'custom');
+    console.log('PAGE 6 - Custom selection found:', customSelection);
 
-    await saveUserSelection({
+    const finalSelectionData = {
       selectedGiftId: giftId,
       customText: customSelection?.customText,
       openedGiftIds: [giftId],
       timestamp: Date.now(),
       userAgent: navigator.userAgent,
-    });
+    };
+    console.log('PAGE 6 - Saving final selection:', finalSelectionData);
+
+    await saveUserSelection(finalSelectionData);
 
     setTimeout(() => setPhase('final'), 2000);
   };
