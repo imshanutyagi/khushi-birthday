@@ -14,15 +14,6 @@ export default function IntroPage() {
   const [showReady, setShowReady] = useState(false);
   const [content, setContent] = useState<PageContent | null>(null);
   const [loading, setLoading] = useState(true);
-  const [currentDate, setCurrentDate] = useState('');
-
-  useEffect(() => {
-    // Get current date
-    const today = new Date();
-    const day = today.getDate();
-    const month = today.toLocaleString('en-US', { month: 'long' });
-    setCurrentDate(`Today is ${day} ${month}.`);
-  }, []);
 
   useEffect(() => {
     const loadContent = async () => {
@@ -83,7 +74,7 @@ export default function IntroPage() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.7 }}
             >
-              {content?.introText1 || currentDate || 'Today is 4 January.'}
+              {content?.introText1 || 'Today is 4 January.'}
             </motion.p>
 
             <motion.p
