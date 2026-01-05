@@ -36,6 +36,11 @@ export interface PageContent {
   luckTitle: string;
   luckInstruction: string;
   finalMessage: string;
+
+  // Special Song
+  songTitle?: string;
+  songLyrics?: string;
+  songUrl?: string;
 }
 
 export interface Gift {

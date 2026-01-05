@@ -37,6 +37,11 @@ export interface IPageContent {
   luckInstruction: string;
   finalMessage: string;
 
+  // Special Song
+  songTitle?: string;
+  songLyrics?: string;
+  songUrl?: string;
+
   updatedAt: Date;
 }
 
@@ -81,6 +86,11 @@ const PageContentSchema = new Schema<IPageContent>(
       type: String,
       default: 'All the gifts will be handed over 🎉\nThank you for being a part of my life ❤️',
     },
+
+    // Special Song
+    songTitle: { type: String, default: '' },
+    songLyrics: { type: String, default: '' },
+    songUrl: { type: String, default: '' },
   },
   {
     timestamps: true,

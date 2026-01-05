@@ -26,6 +26,8 @@ export default function LuckPage() {
   const [selectedBoxes, setSelectedBoxes] = useState<string[]>([]);
   const [finalSelectedGift, setFinalSelectedGift] = useState<string | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showSongQuestion, setShowSongQuestion] = useState(false);
+  const [showSong, setShowSong] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -486,6 +488,79 @@ export default function LuckPage() {
                 <p className="text-2xl md:text-3xl text-pink-800 leading-relaxed mb-8 font-semibold">
                   {content?.finalMessage?.split('\n')[1] || 'Thank you for being a part of my life ❤️'}
                 </p>
+
+                {/* Song Section */}
+                {content?.songTitle && content?.songLyrics && !showSongQuestion && !showSong && (
+                  <motion.div
+                    className="mb-8 mt-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1 }}
+                  >
+                    <p className="text-xl md:text-2xl text-pink-700 font-semibold mb-4">
+                      Do you want to see some lines from a song that I picked for you? 🎵
+                    </p>
+                    <div className="flex gap-4 justify-center">
+                      <motion.button
+                        onClick={() => {
+                          setShowSongQuestion(true);
+                          setShowSong(true);
+                        }}
+                        className="px-8 py-3 bg-gradient-to-r from-pink-500 to-rose-600 text-white text-lg font-bold rounded-full shadow-lg hover:shadow-2xl"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Yes, please! 💝
+                      </motion.button>
+                      <motion.button
+                        onClick={() => setShowSongQuestion(true)}
+                        className="px-8 py-3 bg-gray-200 text-gray-700 text-lg font-bold rounded-full shadow-lg hover:shadow-xl"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Maybe later
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Song Lyrics */}
+                <AnimatePresence>
+                  {showSong && content?.songTitle && content?.songLyrics && (
+                    <motion.div
+                      className="mb-8 mt-6"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                    >
+                      <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 shadow-xl border-2 border-pink-200">
+                        <h3 className="text-2xl md:text-3xl font-bold text-romantic-700 mb-4 text-center" style={{ fontFamily: 'var(--font-dancing)' }}>
+                          🎵 {content.songTitle} 🎵
+                        </h3>
+                        <div className="bg-white rounded-xl p-6 mb-4">
+                          <p className="text-lg md:text-xl text-gray-700 italic whitespace-pre-line text-center leading-relaxed">
+                            {content.songLyrics}
+                          </p>
+                        </div>
+                        {content.songUrl && (
+                          <div className="text-center">
+                            <motion.a
+                              href={content.songUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-block px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-lg font-bold rounded-full shadow-lg hover:shadow-2xl"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              Listen to the Song 🎧
+                            </motion.a>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 <div className="flex justify-center gap-6 text-6xl">
                   <motion.span
                     animate={{ rotate: [0, 20, -20, 0] }}
