@@ -452,9 +452,12 @@ export default function AdminPanel() {
             </div>
 
             {/* Special Song Section */}
-            <div className="space-y-4 p-6 bg-purple-50 rounded-xl border-2 border-purple-200">
-              <h3 className="text-xl font-bold text-purple-700 mb-4">🎵 Special Song (Optional)</h3>
-              <p className="text-sm text-gray-600 mb-4">Add a special song with lyrics that will appear at the end!</p>
+            <div className="space-y-4 p-6 bg-purple-50 rounded-xl border-2 border-purple-300">
+              <h3 className="text-xl font-bold text-purple-700 mb-2">🎵 Special Song with Synced Lyrics</h3>
+              <div className="bg-amber-100 border-l-4 border-amber-500 p-3 mb-4">
+                <p className="text-sm font-semibold text-amber-800">⚠️ Important:</p>
+                <p className="text-xs text-amber-700 mt-1">The song will ONLY appear if you add synced lyrics with timestamps below. This is mandatory - there's no optional listening mode.</p>
+              </div>
               <input
                 type="text"
                 value={content.songTitle || ''}
@@ -469,16 +472,27 @@ export default function AdminPanel() {
                 rows={6}
                 className="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 outline-none"
               />
-              <input
-                type="url"
-                value={content.songUrl || ''}
-                onChange={(e) => setContent({ ...content, songUrl: e.target.value })}
-                placeholder="Song URL (YouTube, Spotify, etc.)"
-                className="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 outline-none"
-              />
+              <div>
+                <label className="block text-sm font-semibold text-purple-700 mb-2">
+                  Song Audio URL (Required)
+                </label>
+                <input
+                  type="url"
+                  value={content.songUrl || ''}
+                  onChange={(e) => setContent({ ...content, songUrl: e.target.value })}
+                  placeholder="Direct audio file URL (e.g., Google Drive, Dropbox, or YouTube link)"
+                  className="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 outline-none"
+                />
+                <p className="text-xs text-gray-600 mt-1">
+                  Upload your audio file to Google Drive, Dropbox, or use a YouTube link, then paste the URL here.
+                </p>
+              </div>
 
-              <div className="bg-purple-100 rounded-lg p-4 border border-purple-300">
-                <h4 className="font-bold text-purple-700 mb-2">🎬 Synced Lyrics (Advanced)</h4>
+              <div className="bg-purple-100 rounded-lg p-4 border-2 border-purple-400">
+                <div className="flex items-center gap-2 mb-2">
+                  <h4 className="font-bold text-purple-700">🎬 Synced Lyrics</h4>
+                  <span className="px-2 py-1 bg-red-500 text-white text-xs font-bold rounded">REQUIRED</span>
+                </div>
                 <p className="text-xs text-gray-600 mb-3">
                   Add timestamps for animated lyrics! Format: <code className="bg-white px-1 rounded">time: lyric</code>
                 </p>
