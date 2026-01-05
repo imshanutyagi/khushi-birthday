@@ -148,11 +148,12 @@ export default function LuckPage() {
 
     // Save final gift selection
     const selections = await getUserSelections();
-    const lastSelection = selections[0];
+    // Find the custom selection to preserve the custom text
+    const customSelection = selections.find(s => s.selectedGiftId === 'custom');
 
     await saveUserSelection({
       selectedGiftId: giftId,
-      customText: lastSelection?.customText,
+      customText: customSelection?.customText,
       openedGiftIds: [giftId],
       timestamp: Date.now(),
       userAgent: navigator.userAgent,
