@@ -20,6 +20,8 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentLineIndex, setCurrentLineIndex] = useState(-1);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const lyricsContainerRef = useRef<HTMLDivElement>(null);
+  const activeLyricRef = useRef<HTMLDivElement>(null);
 
   // Playback control functions
   const togglePlayPause = () => {
@@ -85,6 +87,16 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
     });
     setCurrentLineIndex(index);
   }, [currentTime, lyrics]);
+
+  // Auto-scroll to keep active lyric centered
+  useEffect(() => {
+    if (activeLyricRef.current && lyricsContainerRef.current) {
+      activeLyricRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [currentLineIndex]);
 
   // For YouTube, use postMessage API to get current time
   useEffect(() => {
@@ -158,51 +170,52 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
       )}
 
       {/* Lyrics Display */}
-      <div className="absolute inset-0 flex items-center justify-center px-4">
-        <div className="w-full max-w-4xl">
-          <AnimatePresence mode="wait">
-            {lyrics.map((line, index) => {
-              const isActive = index === currentLineIndex;
-              const isPast = index < currentLineIndex;
-              const isNext = index === currentLineIndex + 1;
+      <div
+        ref={lyricsContainerRef}
+        className="absolute inset-0 flex items-center justify-center px-4 overflow-y-auto"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        <style jsx>{`
+          div::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
+        <div className="w-full max-w-4xl py-[50vh]">
+          {lyrics.map((line, index) => {
+            const isActive = index === currentLineIndex;
+            const isPast = index < currentLineIndex;
 
-              if (!isActive && !isPast && !isNext && index !== currentLineIndex + 2) {
-                return null;
-              }
-
-              return (
-                <motion.div
-                  key={index}
-                  className="text-center mb-8"
-                  initial={{ opacity: 0, y: 50, scale: 0.8 }}
-                  animate={{
-                    opacity: isActive ? 1 : isPast ? 0.3 : 0.5,
-                    y: isActive ? 0 : isPast ? -20 : 20,
-                    scale: isActive ? 1.2 : 0.9,
-                  }}
-                  exit={{ opacity: 0, y: -50 }}
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
+            return (
+              <motion.div
+                key={index}
+                ref={isActive ? activeLyricRef : null}
+                className="text-center mb-8"
+                initial={{ opacity: 0.3 }}
+                animate={{
+                  opacity: isActive ? 1 : isPast ? 0.3 : 0.5,
+                  scale: isActive ? 1.2 : 0.9,
+                }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              >
+                <motion.p
+                  className={`text-2xl md:text-5xl font-bold ${
+                    isActive ? 'text-white' : 'text-white/50'
+                  }`}
+                  style={{ fontFamily: 'var(--font-dancing)' }}
+                  animate={isActive ? {
+                    textShadow: [
+                      '0 0 20px rgba(236, 72, 153, 0.8)',
+                      '0 0 40px rgba(236, 72, 153, 0.6)',
+                      '0 0 20px rgba(236, 72, 153, 0.8)',
+                    ],
+                  } : {}}
+                  transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <motion.p
-                    className={`text-2xl md:text-5xl font-bold ${
-                      isActive ? 'text-white' : 'text-white/50'
-                    }`}
-                    style={{ fontFamily: 'var(--font-dancing)' }}
-                    animate={isActive ? {
-                      textShadow: [
-                        '0 0 20px rgba(236, 72, 153, 0.8)',
-                        '0 0 40px rgba(236, 72, 153, 0.6)',
-                        '0 0 20px rgba(236, 72, 153, 0.8)',
-                      ],
-                    } : {}}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    {line.text}
-                  </motion.p>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
+                  {line.text}
+                </motion.p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
