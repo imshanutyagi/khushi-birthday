@@ -63,20 +63,15 @@ export default function GiftsPage() {
       setConfirmed(true);
       setShowConfetti(true);
 
-      console.log('PAGE 5 - Saving selections:', selectedGifts);
-      console.log('PAGE 5 - Custom text:', customText);
-
       // Save selections
       for (const giftId of selectedGifts) {
-        const selectionData = {
+        await saveUserSelection({
           selectedGiftId: giftId,
           customText: giftId === 'custom' ? customText : undefined,
           openedGiftIds: [],
           timestamp: Date.now(),
           userAgent: navigator.userAgent,
-        };
-        console.log('PAGE 5 - Saving selection:', selectionData);
-        await saveUserSelection(selectionData);
+        });
       }
 
       // Navigate to next page after delay
