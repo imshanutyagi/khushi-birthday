@@ -19,6 +19,7 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentLineIndex, setCurrentLineIndex] = useState(-1);
+  const [showThankYou, setShowThankYou] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
   const activeLyricRef = useRef<HTMLDivElement>(null);
@@ -66,15 +67,21 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
 
       const handlePlay = () => setIsPlaying(true);
       const handlePause = () => setIsPlaying(false);
+      const handleEnded = () => {
+        setIsPlaying(false);
+        setShowThankYou(true);
+      };
 
       audio.addEventListener('timeupdate', updateTime);
       audio.addEventListener('play', handlePlay);
       audio.addEventListener('pause', handlePause);
+      audio.addEventListener('ended', handleEnded);
 
       return () => {
         audio.removeEventListener('timeupdate', updateTime);
         audio.removeEventListener('play', handlePlay);
         audio.removeEventListener('pause', handlePause);
+        audio.removeEventListener('ended', handleEnded);
       };
     }
   }, [isYouTube]);
@@ -88,15 +95,6 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
     setCurrentLineIndex(index);
   }, [currentTime, lyrics]);
 
-  // Auto-scroll to keep active lyric centered
-  useEffect(() => {
-    if (activeLyricRef.current && lyricsContainerRef.current) {
-      activeLyricRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
-  }, [currentLineIndex]);
 
   // For YouTube, use postMessage API to get current time
   useEffect(() => {
@@ -110,6 +108,18 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
       return () => clearInterval(interval);
     }
   }, [isYouTube]);
+
+  // Check if song has ended (for YouTube or when past last lyric)
+  useEffect(() => {
+    if (lyrics.length > 0) {
+      const lastLyric = lyrics[lyrics.length - 1];
+      // Show thank you message 3 seconds after the last lyric
+      if (currentTime > lastLyric.time + 3) {
+        setShowThankYou(true);
+        setIsPlaying(false);
+      }
+    }
+  }, [currentTime, lyrics]);
 
   return (
     <motion.div
@@ -169,53 +179,59 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
         />
       )}
 
-      {/* Lyrics Display */}
-      <div
-        ref={lyricsContainerRef}
-        className="absolute inset-0 flex items-center justify-center px-4 overflow-y-auto"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        <style jsx>{`
-          div::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
-        <div className="w-full max-w-4xl py-[50vh]">
-          {lyrics.map((line, index) => {
-            const isActive = index === currentLineIndex;
-            const isPast = index < currentLineIndex;
+      {/* Lyrics Display - Karaoke Style */}
+      <div className="absolute inset-0 flex items-center justify-center px-4">
+        <div className="w-full max-w-4xl flex flex-col items-center justify-center space-y-6">
+          <AnimatePresence mode="wait">
+            {(() => {
+              // Show current line and 2 lines before/after for context
+              const visibleLines = [];
+              const range = 2;
 
-            return (
-              <motion.div
-                key={index}
-                ref={isActive ? activeLyricRef : null}
-                className="text-center mb-8"
-                initial={{ opacity: 0.3 }}
-                animate={{
-                  opacity: isActive ? 1 : isPast ? 0.3 : 0.5,
-                  scale: isActive ? 1.2 : 0.9,
-                }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-              >
-                <motion.p
-                  className={`text-2xl md:text-5xl font-bold ${
-                    isActive ? 'text-white' : 'text-white/50'
-                  }`}
-                  style={{ fontFamily: 'var(--font-dancing)' }}
-                  animate={isActive ? {
-                    textShadow: [
-                      '0 0 20px rgba(236, 72, 153, 0.8)',
-                      '0 0 40px rgba(236, 72, 153, 0.6)',
-                      '0 0 20px rgba(236, 72, 153, 0.8)',
-                    ],
-                  } : {}}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  {line.text}
-                </motion.p>
-              </motion.div>
-            );
-          })}
+              for (let i = currentLineIndex - range; i <= currentLineIndex + range; i++) {
+                if (i >= 0 && i < lyrics.length) {
+                  visibleLines.push({ ...lyrics[i], index: i });
+                }
+              }
+
+              return visibleLines.map((line) => {
+                const isActive = line.index === currentLineIndex;
+                const distance = Math.abs(line.index - currentLineIndex);
+
+                return (
+                  <motion.div
+                    key={line.index}
+                    className="text-center w-full"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                      opacity: isActive ? 1 : 0.3,
+                      y: 0,
+                      scale: isActive ? 1.1 : 0.85,
+                    }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4, ease: 'easeOut' }}
+                  >
+                    <motion.p
+                      className={`text-2xl md:text-5xl font-bold ${
+                        isActive ? 'text-white' : 'text-white/40'
+                      }`}
+                      style={{ fontFamily: 'var(--font-dancing)' }}
+                      animate={isActive ? {
+                        textShadow: [
+                          '0 0 20px rgba(236, 72, 153, 0.8)',
+                          '0 0 40px rgba(236, 72, 153, 0.6)',
+                          '0 0 20px rgba(236, 72, 153, 0.8)',
+                        ],
+                      } : {}}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      {line.text}
+                    </motion.p>
+                  </motion.div>
+                );
+              });
+            })()}
+          </AnimatePresence>
         </div>
       </div>
 
@@ -247,6 +263,48 @@ export default function SyncedLyricsPlayer({ songTitle, songUrl, lyrics, onClose
           ))}
         </div>
       )}
+
+      {/* Thank You Message */}
+      <AnimatePresence>
+        {showThankYou && (
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-md z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="text-center px-8"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <motion.h2
+                className="text-4xl md:text-6xl font-bold text-white mb-6"
+                style={{ fontFamily: 'var(--font-dancing)' }}
+                animate={{
+                  textShadow: [
+                    '0 0 30px rgba(236, 72, 153, 1)',
+                    '0 0 60px rgba(236, 72, 153, 0.8)',
+                    '0 0 30px rgba(236, 72, 153, 1)',
+                  ],
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                💖 Thank you for being a part of my life! 💖
+              </motion.h2>
+              <motion.button
+                onClick={onClose}
+                className="mt-8 px-8 py-3 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-full font-semibold text-lg hover:shadow-2xl transition-all"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Close
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
