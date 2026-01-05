@@ -788,7 +788,7 @@ export default function AdminPanel() {
         {/* Analytics Tab */}
         {activeTab === 'analytics' && (
           <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6">
-            <h2 className="text-2xl font-bold text-romantic-700 mb-6">User Analytics</h2>
+            <h2 className="text-2xl font-bold text-romantic-700 mb-6">User Analytics 📊</h2>
 
             {selections.length === 0 ? (
               <p className="text-romantic-600 text-center py-8">No data yet</p>
