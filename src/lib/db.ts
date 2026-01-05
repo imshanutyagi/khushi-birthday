@@ -24,6 +24,12 @@ export const updatePageContent = async (content: Partial<PageContent>): Promise<
       body: JSON.stringify(content),
     });
 
+    if (!response.ok) {
+      const text = await response.text();
+      console.error('API error response:', text);
+      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    }
+
     const result = await response.json();
 
     if (!result.success) {
