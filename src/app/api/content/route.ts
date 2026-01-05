@@ -30,14 +30,16 @@ export async function PUT(request: NextRequest) {
 
     const body = await request.json();
 
-    let content = await PageContent.findOne();
-
-    if (!content) {
-      content = await PageContent.create(body);
-    } else {
-      Object.assign(content, body);
-      await content.save();
-    }
+    // Use findOneAndUpdate to avoid version conflicts
+    const content = await PageContent.findOneAndUpdate(
+      {}, // Find the first document
+      body, // Update with new data
+      {
+        new: true, // Return the updated document
+        upsert: true, // Create if doesn't exist
+        runValidators: true // Run schema validators
+      }
+    );
 
     return NextResponse.json({ success: true, data: content });
   } catch (error: any) {
