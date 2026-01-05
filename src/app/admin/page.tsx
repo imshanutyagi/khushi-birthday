@@ -816,8 +816,16 @@ export default function AdminPanel() {
                       <div className="space-y-2">
                         <p className="text-romantic-700">
                           <strong>Selected Gift (Page 5):</strong>{' '}
-                          {selectedGift?.title || 'N/A'}
+                          {selection.selectedGiftId === 'custom' 
+                            ? `Custom Wish: "${selection.customText || 'N/A'}"`
+                            : (selectedGift?.title || 'N/A')}
                         </p>
+                        {selection.customText && selection.selectedGiftId !== 'custom' && (
+                          <p className="text-romantic-700">
+                            <strong>Custom Text:</strong>{' '}
+                            {selection.customText}
+                          </p>
+                        )}
                         <p className="text-romantic-700">
                           <strong>Opened Gifts (Page 6):</strong>{' '}
                           {openedGifts.map(g => g.title).join(', ') || 'N/A'}

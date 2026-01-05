@@ -2,6 +2,7 @@ import mongoose, { Schema, Model, Document } from 'mongoose';
 
 export interface ISelection extends Document {
   selectedGiftId: string | null;
+  customText?: string;
   openedGiftIds: string[];
   timestamp: number;
   userAgent?: string;
@@ -11,6 +12,7 @@ export interface ISelection extends Document {
 const SelectionSchema = new Schema<ISelection>(
   {
     selectedGiftId: { type: String, default: null },
+    customText: { type: String, default: '' },
     openedGiftIds: { type: [String], default: [] },
     timestamp: { type: Number, required: true },
     userAgent: { type: String, default: '' },
