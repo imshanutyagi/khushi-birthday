@@ -146,6 +146,7 @@ export const getUserSelections = async (): Promise<UserSelection[]> => {
       return result.data.map((selection: any) => ({
         id: selection._id,
         selectedGiftId: selection.selectedGiftId,
+        customText: selection.customText,
         openedGiftIds: selection.openedGiftIds,
         timestamp: selection.timestamp,
         userAgent: selection.userAgent,
