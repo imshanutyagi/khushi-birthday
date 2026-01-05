@@ -28,12 +28,26 @@ export default function AdminPanel() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [editingGift, setEditingGift] = useState<Gift | null>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
       loadData();
     }
   }, [isAuthenticated]);
+
+  // Warn user before leaving with unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedChanges]);
 
   const loadData = async () => {
     setLoading(true);
@@ -51,6 +65,7 @@ export default function AdminPanel() {
     setContent(pageData);
     setGifts(giftsData);
     setSelections(selectionsData);
+    setHasUnsavedChanges(false); // Clear unsaved changes flag after loading
     setLoading(false);
   };
 
@@ -64,11 +79,19 @@ export default function AdminPanel() {
     }
   };
 
+  // Helper to update content and mark as unsaved
+  const updateContentField = (updates: Partial<PageContent>) => {
+    if (!content) return;
+    setContent({ ...content, ...updates });
+    setHasUnsavedChanges(true);
+  };
+
   const handleSaveContent = async () => {
     if (!content) return;
     setLoading(true);
     try {
       await updatePageContent(content);
+      setHasUnsavedChanges(false); // Clear unsaved changes flag after successful save
       setMessage('Content saved successfully!');
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
@@ -463,13 +486,13 @@ export default function AdminPanel() {
               <input
                 type="text"
                 value={content.songTitle || ''}
-                onChange={(e) => setContent({ ...content, songTitle: e.target.value })}
+                onChange={(e) => updateContentField({ songTitle: e.target.value })}
                 placeholder="Song Title (e.g., Perfect by Ed Sheeran)"
                 className="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 outline-none"
               />
               <textarea
                 value={content.songLyrics || ''}
-                onChange={(e) => setContent({ ...content, songLyrics: e.target.value })}
+                onChange={(e) => updateContentField({ songLyrics: e.target.value })}
                 placeholder="Song Lyrics (a few meaningful lines)"
                 rows={6}
                 className="w-full px-4 py-2 rounded-lg border-2 border-purple-300 focus:border-purple-500 outline-none"
@@ -527,7 +550,7 @@ export default function AdminPanel() {
                         return null;
                       })
                       .filter(l => l !== null) as Array<{ time: number; text: string }>;
-                    setContent({ ...content, syncedLyrics: parsed });
+                    updateContentField({ syncedLyrics: parsed });
                   }}
                   placeholder="0: First line&#10;3.5: Second line&#10;7: Third line"
                   rows={8}
@@ -536,12 +559,23 @@ export default function AdminPanel() {
               </div>
             </div>
 
+            {hasUnsavedChanges && (
+              <div className="bg-orange-100 border-2 border-orange-500 text-orange-800 px-6 py-4 rounded-lg mb-4 animate-pulse">
+                <p className="font-bold">⚠️ You have unsaved changes!</p>
+                <p className="text-sm mt-1">Click "Save All Content" below to save your changes, or they will be lost if you refresh or leave this page.</p>
+              </div>
+            )}
+
             <button
               onClick={handleSaveContent}
               disabled={loading}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50"
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 ${
+                hasUnsavedChanges
+                  ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white animate-pulse'
+                  : 'bg-gradient-to-r from-pink-500 to-rose-600 text-white'
+              }`}
             >
-              <FiSave /> Save All Content
+              <FiSave /> {hasUnsavedChanges ? 'Save All Content (Unsaved Changes)' : 'Save All Content'}
             </button>
               </>
             )}
