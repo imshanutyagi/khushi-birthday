@@ -107,8 +107,11 @@ export default function AdminPanel() {
       if (content) {
         const updated = { ...content, [field]: url };
         setContent(updated);
-        await updatePageContent({ [field]: url });
-        setMessage('File uploaded successfully!');
+        // Save ALL content fields, not just the uploaded file
+        // This ensures text fields (title, lyrics, etc.) are also saved
+        await updatePageContent(updated);
+        setHasUnsavedChanges(false); // Clear flag since everything is saved
+        setMessage('File uploaded and all content saved successfully!');
         setTimeout(() => setMessage(''), 3000);
       }
     } catch (error: any) {
